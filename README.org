@@ -1,0 +1,8 @@
+* Petitions
+Project 7 - Day 33 - www.hackingwithswift.com/100
+
+** Day 33
+Introducing UITabBarController and the Codable protocol for decoding JSON automatically.
+The Data(contentsOf:) initializer is pretty cool as well, although the implementation in this app is not optimal as it blocks up the main thread. But it's cool that both String and Data can easily be initalizer with an URL to a local or web resource.
+
+[[Screen Shot 2019-09-11 at 9.17.24 AM.png]]
