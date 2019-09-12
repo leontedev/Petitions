@@ -7,7 +7,18 @@ The Data(contentsOf:) initializer is pretty cool as well, although the implement
 
 [[Screen Shot 2019-09-11 at 9.17.24 AM.png]]
 ** Day 34
-Instantiating in code another instance of the Navigation Controller which embeds a UITableViewController.
+- The DetailViewController which is a WKWebView which loads HTML code from string (webView.loadHTMLString(html, baseURL: nil)), was not added via storyboard.
+It was simply instantiated and pushed to the Navigation Controller.
+
+#+BEGIN_SRC Swift
+override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = DetailViewController()
+        vc.detailItem = petitions[indexPath.row]
+        navigationController?.pushViewController(vc, animated: true)
+}
+#+END_SRC
+
+- Instantiating in code another instance of the Navigation Controller which embeds a UITableViewController.
 
 #+BEGIN_SRC Swift
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
