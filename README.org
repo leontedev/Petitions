@@ -3,7 +3,7 @@ Project 7 - Day 33 - www.hackingwithswift.com/100/33
 
 Petitions app loads JSON from the White House Petitions API. The user can filter the petitions for a search string (both in the title or body of the petition) and read the body of the petition.
 
-[[Screen Shot 2019-09-12 at 11.32.40 AM.png]]
+[[gif.gif]]
 ** Day 33
 Introducing UITabBarController and the Codable protocol for decoding JSON automatically.
 The Data(contentsOf:) initializer is pretty cool as well, although the implementation in this app is not optimal as it blocks up the main thread. But it's cool that both String and Data can easily be initalized with an URL to a local or web resource.
