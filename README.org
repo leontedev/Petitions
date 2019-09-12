@@ -45,3 +45,30 @@ if navigationController?.tabBarItem.tag == 0 {
 #+END_SRC
 
 [[Screen Shot 2019-09-12 at 9.56.40 AM.png]]
+** Day 35
+Challange: 
+
+1. Add a Credits button to the top-right corner using UIBarButtonItem. When this is tapped, show an alert telling users the data comes from the We The People API of the Whitehouse.
+2. Let users filter the petitions they see. This involves creating a second array of filtered items that contains only petitions matching a string the user entered. Use a UIAlertController with a text field to let them enter that string. This is a tough one, so I’ve included some hints below if you get stuck.
+3. Experiment with the HTML – this isn’t a HTML or CSS tutorial, but you can find lots of resources online to give you enough knowledge to tinker with the layout a little.
+
+Filtering of the petitions for either the title or body of the petition:
+
+#+BEGIN_SRC Swift
+@objc func filterResults() {
+        let ac = UIAlertController(title: "Search", message: "Enter a search string", preferredStyle: .alert)
+        ac.addTextField()
+        ac.addAction(UIAlertAction(title: "Filter", style: .default, handler: { [unowned ac, weak self] _ in
+            guard let searchTerm = ac.textFields?[0].text else { return }
+            self?.title = "\"\(searchTerm)\""
+            self?.filteredPetitions = self?.petitions.filter { $0.title.uppercased().contains(searchTerm.uppercased()) || $0.body.uppercased().contains(searchTerm.uppercased())
+                } ?? []
+            
+            self?.tableView.reloadData()
+        }))
+                     
+        present(ac, animated: true)
+}
+#+END_SRC
+
+[[Screen Shot 2019-09-12 at 11.32.40 AM.png]]
