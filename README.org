@@ -1,8 +1,36 @@
 * Petitions
-Project 7 - Day 33 - www.hackingwithswift.com/100
+Project 7 - Day 33 - www.hackingwithswift.com/100/33
 
 ** Day 33
 Introducing UITabBarController and the Codable protocol for decoding JSON automatically.
-The Data(contentsOf:) initializer is pretty cool as well, although the implementation in this app is not optimal as it blocks up the main thread. But it's cool that both String and Data can easily be initalizer with an URL to a local or web resource.
+The Data(contentsOf:) initializer is pretty cool as well, although the implementation in this app is not optimal as it blocks up the main thread. But it's cool that both String and Data can easily be initalized with an URL to a local or web resource.
+
+[[Screen Shot 2019-09-11 at 9.17.24 AM.png]]
+** Day 34
+Instantiating in code another instance of the Navigation Controller which embeds a UITableViewController.
+
+#+BEGIN_SRC Swift
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        if let tabBarController = window?.rootViewController as? UITabBarController {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "NavController")
+            vc.tabBarItem = UITabBarItem(tabBarSystemItem: .topRated, tag: 1)
+            tabBarController.viewControllers?.append(vc)
+        }
+        
+        return true
+}
+#+END_SRC
+
+And then the source URL is modified based on the tabBarItem tag property:
+
+#+BEGIN_SRC Swift
+if navigationController?.tabBarItem.tag == 0 {
+            urlString = "https://www.hackingwithswift.com/samples/petitions-1.json"
+} else {
+            urlString = "https://www.hackingwithswift.com/samples/petitions-2.json"
+}
+#+END_SRC
 
 [[Screen Shot 2019-09-11 at 9.17.24 AM.png]]
