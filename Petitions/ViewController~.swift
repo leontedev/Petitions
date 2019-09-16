@@ -47,7 +47,6 @@ class ViewController: UITableViewController {
         ac.addAction(UIAlertAction(title: "Filter", style: .default, handler: { [unowned ac, weak self] _ in
             guard let searchTerm = ac.textFields?[0].text else { return }
             self?.title = "\"\(searchTerm)\""
-            
             DispatchQueue.global(qos: .userInitiated).async { [weak self] in
                 
                 self?.filteredPetitions = self?.petitions.filter { $0.title.uppercased().contains(searchTerm.uppercased()) || $0.body.uppercased().contains(searchTerm.uppercased())
