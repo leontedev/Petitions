@@ -1,0 +1,77 @@
+* Petitions
+Project 7 - Day 33 - www.hackingwithswift.com/100/33
+
+Petitions app loads JSON from the White House Petitions API. The user can filter the petitions for a search string (both in the title or body of the petition) and read the body of the petition.
+
+[[gif.gif]]
+** Day 33
+Introducing UITabBarController and the Codable protocol for decoding JSON automatically.
+The Data(contentsOf:) initializer is pretty cool as well, although the implementation in this app is not optimal as it blocks up the main thread. But it's cool that both String and Data can easily be initalized with an URL to a local or web resource.
+
+[[Screen Shot 2019-09-11 at 9.17.24 AM.png]]
+** Day 34
+- The DetailViewController which is a WKWebView which loads HTML code from string (webView.loadHTMLString(html, baseURL: nil)), was not added via storyboard.
+It was simply instantiated and pushed to the Navigation Controller.
+
+#+BEGIN_SRC Swift
+override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = DetailViewController()
+        vc.detailItem = petitions[indexPath.row]
+        navigationController?.pushViewController(vc, animated: true)
+}
+#+END_SRC
+
+- Instantiating in code another instance of the Navigation Controller which embeds a UITableViewController.
+
+#+BEGIN_SRC Swift
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        if let tabBarController = window?.rootViewController as? UITabBarController {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "NavController")
+            vc.tabBarItem = UITabBarItem(tabBarSystemItem: .topRated, tag: 1)
+            tabBarController.viewControllers?.append(vc)
+        }
+        
+        return true
+}
+#+END_SRC
+
+And then the source URL is modified based on the tabBarItem tag property:
+
+#+BEGIN_SRC Swift
+if navigationController?.tabBarItem.tag == 0 {
+            urlString = "https://www.hackingwithswift.com/samples/petitions-1.json"
+} else {
+            urlString = "https://www.hackingwithswift.com/samples/petitions-2.json"
+}
+#+END_SRC
+
+[[Screen Shot 2019-09-12 at 9.56.40 AM.png]]
+** Day 35
+Challange: 
+
+1. Add a Credits button to the top-right corner using UIBarButtonItem. When this is tapped, show an alert telling users the data comes from the We The People API of the Whitehouse.
+2. Let users filter the petitions they see. This involves creating a second array of filtered items that contains only petitions matching a string the user entered. Use a UIAlertController with a text field to let them enter that string. This is a tough one, so I’ve included some hints below if you get stuck.
+3. Experiment with the HTML – this isn’t a HTML or CSS tutorial, but you can find lots of resources online to give you enough knowledge to tinker with the layout a little.
+
+Filtering of the petitions for either the title or body of the petition:
+
+#+BEGIN_SRC Swift
+@objc func filterResults() {
+        let ac = UIAlertController(title: "Search", message: "Enter a search string", preferredStyle: .alert)
+        ac.addTextField()
+        ac.addAction(UIAlertAction(title: "Filter", style: .default, handler: { [unowned ac, weak self] _ in
+            guard let searchTerm = ac.textFields?[0].text else { return }
+            self?.title = "\"\(searchTerm)\""
+            self?.filteredPetitions = self?.petitions.filter { $0.title.uppercased().contains(searchTerm.uppercased()) || $0.body.uppercased().contains(searchTerm.uppercased())
+                } ?? []
+            
+            self?.tableView.reloadData()
+        }))
+                     
+        present(ac, animated: true)
+}
+#+END_SRC
+
+[[Screen Shot 2019-09-12 at 11.32.40 AM.png]]
